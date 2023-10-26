@@ -17,10 +17,15 @@ const userSchema = new Schema(
         validator: function (v) {
           return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
         },
-        message: "Not a valid, email, please entere a valid email!",
+        message: "Not a valid, email, please enter a valid email!",
       },
     },
-    thoughts: [thoughtSchema],
+    thoughts: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Thought",
+      }
+    ],
     friends: [
       {
         type: Schema.Types.ObjectId,
@@ -31,10 +36,11 @@ const userSchema = new Schema(
   {
     toJSON: {
       getters: true,
+      virtuals: true,
     },
   }
 );
-userSchema.virtual("reactionCount").get(function () {
+userSchema.virtual("friendCount").get(function () {
     return this.friends.length;
 });
 

@@ -3,15 +3,15 @@ const reactionSchema = require('./Reaction')
 const thoughtSchema = new Schema(
     {
         thoughtText: {
-            Type: String,
+            type: String,
             required: true,
             min_length: 1,
             max_length: 280,
         },
         createdAt: {
-            Type: Date,
-            default:Date.now(),
-            get: (d) => new Date(d).toLocaleDateString(),
+            type: Date,
+            default:Date.now,
+            get: (timestamp) => new Date(timestamp).toLocaleDateString(),
         },
         username: {
             type:String,
@@ -24,6 +24,7 @@ const thoughtSchema = new Schema(
           getters: true,
           virtuals: true,
         },
+        timestamps: true,
       },   
 );
 thoughtSchema.virtual("reactionCount").get(function() {

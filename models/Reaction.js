@@ -4,7 +4,7 @@ const reactionSchema = new Schema(
     {
         reactionId: {
             type: Schema.Types.ObjectId,
-            default: () => new Schema.Types.ObjectId,
+            default: () => new Schema.Types.ObjectId(),
         },
         reactionBody: {
             type: String,
@@ -16,11 +16,19 @@ const reactionSchema = new Schema(
             required: true,
         },
         createdAt: {
-            Type: Date,
-            default:Date.now(),
-            get: (d) => new Date(d).toLocaleDateString(),
-        },
+            type: Date,
+            default:Date.now,
+            get: (timestamp) => new Date(timestamp).toLocaleDateString(),
+        }, 
     },
+    {
+        toJSON: {
+          getters: true,
+          virtuals: true,
+        },
+        timestamps: true,
+      },  
+    
 )
 
 module.exports = reactionSchema;

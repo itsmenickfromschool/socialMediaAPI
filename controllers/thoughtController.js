@@ -2,7 +2,16 @@ const { User, Thought } = require("../models");
 
 exports.createThought = async (req, res) => {
     try {
+      if (!req.body.userId) {
+        return res.status(400).json({ message: "User ID must be provided" });
+      }
+      const user = await User.findById(req.body.userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
       const thought = await Thought.create(req.body);
+      user.thoughts.push(thought._id);
+    await user.save();
       res.status(201).json(thought);
     } catch (err) {
       res.status(500).json({ message: "Error creating thought", error: err });
@@ -71,7 +80,7 @@ exports.updateThought = async (req, res) => {
     try {
       const thought = await Thought.findByIdAndUpdate(
         req.params.thoughtId,
-        { $pull: { reactions: { reactionId: req.params.reactionId } } },
+        { $pull: { reactions: { _id: req.params.reactionId } } },
         { new: true }
       );
       res.status(200).json(thought);

@@ -88,3 +88,4 @@ exports.updateThought = async (req, res) => {
       res.status(400).json(err);
     }
   };
+  // This was fun
